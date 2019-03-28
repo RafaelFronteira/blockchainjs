@@ -7,6 +7,7 @@ module.exports = class Block {
         this.hash = null;
         this.previousHash = null;
         this.previous = null;
+        this.transaction = null;
     }
 
     getValue() {
@@ -15,6 +16,14 @@ module.exports = class Block {
 
     setValue(i) {
         this.i = i;
+    }
+
+    getTransaction() {
+        return this.transaction;
+    }
+
+    setTransaction(transaction) {
+        this.transaction = transaction;
     }
 
     getPrevious() {
@@ -38,7 +47,7 @@ module.exports = class Block {
     }
 
     setPreviousHash(value) {
-        this.previousHash = crypto.createHash('sha256').update(`${value}`).digest('hex');
+        this.previousHash = value;
     }
 
 }

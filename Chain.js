@@ -16,17 +16,16 @@ module.exports = class Chain {
     }
 
     addBlock(block) {
-        console.log(this.isEmpty());
         if (this.isEmpty()) {
             this.first = block;
-            this.first.setHash(block.getValue());
+            this.first.setHash(block.getHash() + block.getTransaction());
             this.last = block;
-            this.last.setHash(block.getValue());
+            this.last.setHash(block.getHash() + block.getTransaction());
         }
         else {
             block.setPrevious(this.last);
-            block.setHash(this.last.getHash());
-            // TODO
+            block.setHash(this.last.getHash() + block.getTransaction());
+            block.setPreviousHash(this.last.getHash());
             this.last = block;
         }
 
@@ -38,6 +37,7 @@ module.exports = class Chain {
         for (let i = this.total; i > index; i--) {
             next = next.getPrevious();
         }
+
         return next;
     }
 
