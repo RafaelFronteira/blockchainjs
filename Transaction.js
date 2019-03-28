@@ -26,6 +26,8 @@ module.exports = class Transaction {
 
     setValue(value) { this.value = value; }
 
+    getHash() { return this.hash; }
+
     _createHash() {
         return crypto.createHash('sha256')
             .update(`${this.from}${this.to}${this.value}`).digest('hex');
