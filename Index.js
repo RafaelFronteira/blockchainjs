@@ -1,9 +1,9 @@
 //TODO: criar uma classe para a merklethree
 const crypto = require('crypto');
 
-const Block = require('./Block');
-const Transaction = require('./Transaction');
-const Chain = require('./Chain');
+const Block = require('./core/Block');
+const Transaction = require('./core/Transaction');
+const Chain = require('./core/Chain');
 
 const c = new Chain();
 
@@ -20,15 +20,18 @@ const transactions = new Array (
     new Transaction('Lucas', 'José', 8527),
 );
 
-for (let i = 0; i < transactions.length; i++) {
-    console.log('primeiro => ', transactions[i].getHash());
-    console.log('segundo  => ', transactions[i + 1].getHash());
-    
-    
-    i++;
+const merkletree = new Array();
+transactions.forEach(transaction => merkletree.push(transaction.getHash()));
+
+for (let i = 0; i < merkletree.length; i++) {
+    if (merkletree[i] && merkletree[i + 1]) {
+        merkletree.push(createHash(merkletree[i] + merkletree[i + 1]));
+        i++;
+    }
 }
 
-
+console.log('Merkle tree:');
+console.table(merkletree);
 
 
 // b.setTransaction(transactions);
@@ -52,7 +55,9 @@ for (let i = 0; i < transactions.length; i++) {
 // console.table(iterations);
 
 
-function createHash() {
-    return crypto.createHash('sha256')
-        .update(`${this.from}${this.to}${this.value}`).digest('hex');
+function createHash(value) {
+    if (value) {
+        return crypto.createHash('sha256')
+            .update(`${value}`).digest('hex');
+    }
 }
