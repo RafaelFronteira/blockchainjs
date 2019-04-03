@@ -8,6 +8,7 @@ module.exports = class Block {
         this.previousHash = null;
         this.previous = null;
         this.transaction = null;
+        this.markleRoot = null;
     }
 
     getValue() {
@@ -24,6 +25,7 @@ module.exports = class Block {
 
     setTransaction(transaction) {
         this.transaction = transaction;
+        this._generateMarkletree();
     }
 
     getPrevious() {
@@ -39,7 +41,7 @@ module.exports = class Block {
     }
 
     setHash(value) {
-        this.hash = crypto.createHash('sha256').update(`${value}`).digest('hex');
+        this.hash = this._createHash(value);
     }
 
     getPreviousHash() {
@@ -48,6 +50,36 @@ module.exports = class Block {
 
     setPreviousHash(value) {
         this.previousHash = value;
+    }
+
+    getMarkleRoot() {
+        return this.markleRoot;
+    }
+
+    setMarkleRoot(value) {
+        this.markleRoot = value;
+    }
+
+    _generateMarkletree() {
+        const merkletree = new Array();
+        this.getTransaction().forEach(transaction => merkletree.push(transaction.getHash()));
+
+        for (let i = 0; i < merkletree.length; i++) {
+            if (merkletree[i] && merkletree[i + 1]) {
+                merkletree.push(this._createHash(merkletree[i] + merkletree[i + 1]));
+                i++;
+            }
+        }
+
+        this.setMarkleRoot(merkletree[merkletree.length - 1]);
+    }
+
+
+    _createHash(value) {
+        if (value) {
+            return crypto.createHash('sha256')
+                .update(`${value}`).digest('hex');
+        }
     }
 
 }

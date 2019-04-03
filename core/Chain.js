@@ -18,13 +18,13 @@ module.exports = class Chain {
     addBlock(block) {
         if (this.isEmpty()) {
             this.first = block;
-            this.first.setHash(block.getHash() + block.getTransaction());
+            this.first.setHash(block.getHash() + block.getMarkleRoot());
             this.last = block;
-            this.last.setHash(block.getHash() + block.getTransaction());
+            this.last.setHash(block.getHash() + block.getMarkleRoot());
         }
         else {
             block.setPrevious(this.last);
-            block.setHash(this.last.getHash() + block.getTransaction());
+            block.setHash(this.last.getHash() + block.getMarkleRoot());
             block.setPreviousHash(this.last.getHash());
             this.last = block;
         }
