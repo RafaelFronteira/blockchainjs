@@ -1,4 +1,4 @@
-const crypto = require('crypto');
+// const crypto = require('crypto');
 const Block = require('./core/Block');
 const Transaction = require('./core/Transaction');
 const Chain = require('./core/Chain');
@@ -16,24 +16,25 @@ const transactions = new Array (
     new Transaction('João', 'Pedro', 9876),
     new Transaction('Rafael', 'Maria', 1234),
     new Transaction('Lucas', 'José', 8527),
+    new Transaction('Loiane', 'Rafael', 9876),
 );
 
 b.setTransaction(transactions);
-b2.setTransaction(transactions);
-b3.setTransaction(transactions);
-b4.setTransaction(transactions);
+// b2.setTransaction(transactions);
+// b3.setTransaction(transactions);
+// b4.setTransaction(transactions);
 
 c.addBlock(b);
-c.addBlock(b2);
-c.addBlock(b3);
-c.addBlock(b4);
+// c.addBlock(b2);
+// c.addBlock(b3);
+// c.addBlock(b4);
 
-const iterations = new Array();
+// const iterations = new Array();
 
-for (let i = 1; i <= 4; i++) {
-    const block = c.getBlock(i);
-    iterations.push(block);
-}
+// for (let i = 1; i <= 4; i++) {
+//     const block = c.getBlock(i);
+//     iterations.push(block);
+// }
 
 
-console.log(iterations);
+// console.log(iterations);
