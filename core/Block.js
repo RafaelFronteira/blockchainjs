@@ -63,7 +63,6 @@ module.exports = class Block {
     _generateMarkletree() {
         const merkletree = new Array();
         this.getTransaction().forEach(transaction => merkletree.push(transaction.getHash()));
-        console.log('merkletree size initial => ', merkletree.length);
 
         const attr = {
             done: 0,
