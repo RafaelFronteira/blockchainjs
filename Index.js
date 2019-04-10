@@ -1,4 +1,3 @@
-// const crypto = require('crypto');
 const Block = require('./core/Block');
 const Transaction = require('./core/Transaction');
 const Chain = require('./core/Chain');

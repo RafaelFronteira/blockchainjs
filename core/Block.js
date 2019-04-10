@@ -63,42 +63,42 @@ module.exports = class Block {
     _generateMarkletree() {
         const merkletree = new Array();
         this.getTransaction().forEach(transaction => merkletree.push(transaction.getHash()));
+        console.log('merkletree size initial => ', merkletree.length);
 
-        const aux = new Array();
-        for (let i =  merkletree.length - 1; i > 0; i--) {
-            console.log('length aux => ', aux.length);
-            console.log('Index => ', i);
-            console.log('I = 1 && merkletree.length é impar? ', i === 1 && merkletree.length % 2 !== 0);
-            if (i === 1 && merkletree.length % 2 !== 0) {
-                console.log('clone value from merkletree');
+        const attr = {
+            done: 0,
+            size: 0
+        };
+
+
+        while (!attr.done) {
+            let newHash = 0;
+
+            if (merkletree.length % 2 !== 0) {
                 merkletree.push(merkletree[merkletree.length - 1]);
-                i++;
             }
 
-            console.log('length merkletree => ', merkletree.length);
-            merkletree.push(this._createHash(merkletree[i] + merkletree[i - 1]));
-            // console.log('Index current -> ', merkletree[i]);
-            // console.log('Index next    ->', merkletree[i - 1]);
-            // aux.push(this._createHash(merkletree[i] + merkletree[i - 1]));
-            // console.log('aux condition => ', aux > 0 && aux.length % 2 === 0);
-            // if (aux.length > 0 && aux.length % 2 === 0) {
-            //     aux.push(this._createHash(aux[aux.length - 2] + aux[aux.length - 1]));
-            //     console.log('Aux => ', aux);
-            // }
+            if (attr.size === 0) {
+                attr.size = merkletree.length;
+            }
+            
+
+            for (let i = 0; i < attr.size; i++) {
+                if (merkletree[i] && merkletree[i + 1]) {
+                    merkletree.push(this._createHash(merkletree[i] + merkletree[i + 1]));
+                    i++;
+                    newHash++;
+                }
+            }
+
+            attr.size = newHash;
+
+            if (newHash === 1) {
+                attr.done = true;
+            }
         }
 
-        // for (let i = 0; i < merkletree.length; i++) {
-        //     if (merkletree[i] && merkletree[i + 1]) {
-        //         merkletree.push(this._createHash(merkletree[i] + merkletree[i + 1]));
-        //         i++;
-        //     }
-        // }
-        
-        console.log('Merkletree => ', merkletree);
-        console.log('Length => ', merkletree.length - 1);
-        
-        // console.table(merkletree);
-        // this.setMarkleRoot(merkletree[merkletree.length - 1]);
+        console.log('Merkletree final => ', merkletree);
     }
 
 
