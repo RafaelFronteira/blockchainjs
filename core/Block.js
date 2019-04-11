@@ -63,41 +63,41 @@ module.exports = class Block {
     _generateMarkletree() {
         const merkletree = new Array();
         this.getTransaction().forEach(transaction => merkletree.push(transaction.getHash()));
+        // this.getTransaction().forEach((transaction, index) => merkletree.push(`${index}`));
 
         const attr = {
             done: 0,
-            size: 0
+            size: 0,
+            level: 0
         };
-
-
+        
         while (!attr.done) {
             let newHash = 0;
+            attr.size = merkletree.length;
 
-            if (merkletree.length % 2 !== 0) {
-                merkletree.push(merkletree[merkletree.length - 1]);
-            }
-
-            if (attr.size === 0) {
-                attr.size = merkletree.length;
-            }
-            
-
-            for (let i = 0; i < attr.size; i++) {
-                if (merkletree[i] && merkletree[i + 1]) {
-                    merkletree.push(this._createHash(merkletree[i] + merkletree[i + 1]));
-                    i++;
+            for (let i = attr.level; i < attr.size; i++) {
+                if ((i+1) == attr.size) {
+                    // merkletree.push(`${merkletree[i]}${merkletree[i]}`);
+                    merkletree.push(this._createHash(merkletree[i] + merkletree[i]));
+                    newHash++;
+                    break;
+                } else {
+                    // merkletree.push(`${merkletree[i]}${merkletree[i+1]}`);
+                    merkletree.push(this._createHash(merkletree[i] + merkletree[i+1]));
                     newHash++;
                 }
+
+                i++;
             }
 
-            attr.size = newHash;
+            attr.level = merkletree.length - newHash;
 
             if (newHash === 1) {
                 attr.done = true;
             }
         }
-
-        console.log('Merkletree final => ', merkletree);
+        console.log('Merkletre => ', merkletree);
+        this.setMarkleRoot(merkletree[merkletree.length - 1]);
     }
 
 

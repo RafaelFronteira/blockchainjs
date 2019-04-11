@@ -15,6 +15,12 @@ const transactions = new Array (
     new Transaction('João', 'Pedro', 9876),
     new Transaction('Rafael', 'Maria', 1234),
     new Transaction('Lucas', 'José', 8527),
+    new Transaction('Loiane', 'Rafaela', 9876),
+    new Transaction('Maria', 'Guilherme', 33123),
+    new Transaction('João', 'Pedro', 9876),
+    new Transaction('Rafael', 'Maria', 1234),
+    new Transaction('Lucas', 'José', 8527),
+    new Transaction('Loiane', 'Rafael', 9876),
     new Transaction('Loiane', 'Rafael', 9876),
 );
 
